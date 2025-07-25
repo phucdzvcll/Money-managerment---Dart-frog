@@ -1,13 +1,15 @@
 import 'package:dart_either/dart_either.dart';
 import 'package:mm/constants/exception_code.dart';
-import 'package:mm/core/service/service_mixin.dart';
-import 'package:mm/feature/auth/dto/user_dto.dart';
-import 'package:mm/feature/auth/repository/user_repository.dart';
-import 'package:mm/core/utils/auth/password_util.dart';
 import 'package:mm/core/model/api_response.dart';
+import 'package:mm/core/service/service_mixin.dart';
+import 'package:mm/core/utils/auth/jwt.dart';
+import 'package:mm/core/utils/auth/password_util.dart';
+import 'package:mm/feature/auth/dto/user_dto.dart';
+import 'package:mm/feature/auth/entities/user_entity.dart';
+import 'package:mm/feature/auth/repository/user_repository.dart';
 
 abstract class AuthService {
-  Future<Either<ApiError, UserDto>> login(String username, String password);
+  Future<Either<ApiError, UserEntity>> login(String username, String password);
 
   Future<Either<ApiError, bool>> signUp(
     String username,
@@ -22,15 +24,13 @@ class AuthServiceImpl extends AuthService with ServiceMixin {
   final UserRepository _userRepository;
 
   @override
-  Future<Either<ApiError, UserDto>> login(String username, String password) async {
+  Future<Either<ApiError, UserEntity>> login(
+      String username, String password) async {
     return call(
       fn: () async {
         final user = await _userRepository.getUserByUsername(username);
-        if (user == null) {
-          throw const ApiError(code: USER_NOT_FOUND);
-        }
 
-        final passwordHash = user['password_hash'] as String;
+        final passwordHash = user.passwordHash ?? '';
         final isValid = PasswordUtil.verifyPassword(
           inputPassword: password,
           dbValue: passwordHash,
@@ -38,7 +38,12 @@ class AuthServiceImpl extends AuthService with ServiceMixin {
         if (!isValid) {
           throw const ApiError(code: PASSWORD_INCORRECT);
         }
-        return UserDto.fromJson(user);
+        final token = JwtUtil.generateJwt(user);
+        final rToken = JwtUtil.generateRefeshJwt(user);
+        return user.toEntity.copyWith(
+          token: token,
+          rToken: rToken,
+        );
       },
     );
   }

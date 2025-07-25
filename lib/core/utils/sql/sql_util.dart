@@ -1,12 +1,14 @@
 import 'package:postgres/postgres.dart';
 
+typedef FromJson<T> = T Function(Map<String, dynamic> json);
+
 class SqlUtil {
-  final Connection connection;
+  SqlUtil();
 
-  SqlUtil(this.connection);
-
-  Future<List<Map<String, dynamic>>> read({
+  static Future<T?> read<T>({
     required String table,
+    required Connection connection,
+    required FromJson<T> fromJson,
     String? where,
     Map<String, dynamic>? parameters,
   }) async {
@@ -17,12 +19,35 @@ class SqlUtil {
       Sql.named(sql),
       parameters: parameters ?? {},
     );
-    return result.map((row) => row.toColumnMap()).toList();
+    final data = result.map((row) => row.toColumnMap()).toList();
+    if (data.isEmpty) {
+      return null;
+    } else {
+      return fromJson(data.first);
+    }
   }
 
-  Future<void> create({
+  static Future<List<T>> readAll<T>({
+    required String table,
+    required Connection connection,
+    required FromJson<T> fromJson,
+    String? where,
+    Map<String, dynamic>? parameters,
+  }) async {
+    final sql = where != null
+        ? 'SELECT * FROM $table WHERE $where'
+        : 'SELECT * FROM $table';
+    final result = await connection.execute(
+      Sql.named(sql),
+      parameters: parameters ?? {},
+    );
+    return result.map((row) => fromJson(row.toColumnMap())).toList();
+  }
+
+  static Future<void> create({
     required String table,
     required Map<String, dynamic> data,
+    required Connection connection,
   }) async {
     final columns = data.keys.join(', ');
     final values = data.keys.map((k) => '@$k').join(', ');
@@ -33,7 +58,8 @@ class SqlUtil {
     );
   }
 
-  Future<void> update({
+  static Future<void> update({
+    required Connection connection,
     required String table,
     required Map<String, dynamic> data,
     required String where,
@@ -47,7 +73,8 @@ class SqlUtil {
     );
   }
 
-  Future<void> delete({
+  static Future<void> delete({
+    required Connection connection,
     required String table,
     required String where,
     required Map<String, dynamic> whereParams,
@@ -59,4 +86,3 @@ class SqlUtil {
     );
   }
 }
-

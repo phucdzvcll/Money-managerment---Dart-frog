@@ -1,8 +1,7 @@
 import 'package:dart_frog/dart_frog.dart';
 import 'package:mm/constants/exception_code.dart';
-import 'package:mm/feature/auth/dto/user_dto.dart';
-import 'package:mm/feature/auth/service/auth_service.dart';
 import 'package:mm/core/model/api_response.dart';
+import 'package:mm/feature/auth/service/auth_service.dart';
 
 Future<Response> onRequest(RequestContext context) async {
   final service = await context.read<Future<AuthService>>();
@@ -24,9 +23,7 @@ Future<Response> onRequest(RequestContext context) async {
         return error.toResponse();
       },
       ifRight: (r) {
-        return SuccessResponse(
-          data: UserDto(username: username, fullName: fullName),
-        ).toResponse();
+        return emptyResponse;
       },
     );
   }

@@ -1,3 +1,7 @@
+import 'package:mm/constants/exception_code.dart';
+import 'package:mm/core/model/api_response.dart';
+import 'package:mm/core/utils/sql/sql_util.dart';
+import 'package:mm/feature/auth/dto/user_dto.dart';
 import 'package:postgres/postgres.dart';
 
 class UserRepository {
@@ -33,21 +37,16 @@ class UserRepository {
     );
   }
 
-  Future<Map<String, dynamic>?> getUserByUsername(String username) async {
-    final result = await _connection.execute(
-      Sql.named(
-          'SELECT id, username, password_hash, full_name FROM users WHERE username = @username'),
-      parameters: {'username': username},
+  Future<UserDto> getUserByUsername(String username) async {
+    final result = await SqlUtil.read<UserDto>(
+      table: 'users',
+      connection: _connection,
+      fromJson: UserDto.fromJson,
+      where: "username = '$username'",
     );
 
-    if (result.isEmpty) return null;
+    if (result == null) throw const ApiError(code: USER_NOT_FOUND);
 
-    final row = result.first.toColumnMap();
-    return {
-      'id': row['id'],
-      'username': row['username'],
-      'password_hash': row['password_hash'],
-      'full_name': row['full_name'],
-    };
+    return result;
   }
 }

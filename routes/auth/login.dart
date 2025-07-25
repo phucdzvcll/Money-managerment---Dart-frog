@@ -1,8 +1,7 @@
 import 'package:dart_frog/dart_frog.dart';
 import 'package:mm/constants/exception_code.dart';
-import 'package:mm/feature/auth/service/auth_service.dart';
-import 'package:mm/core/utils/auth/jwt.dart';
 import 'package:mm/core/model/api_response.dart';
+import 'package:mm/feature/auth/service/auth_service.dart';
 
 Future<Response> onRequest(RequestContext context) async {
   final service = await context.read<Future<AuthService>>();
@@ -20,16 +19,13 @@ Future<Response> onRequest(RequestContext context) async {
   } else {
     final result = await service.login(username, password);
     return result.fold(
-      ifLeft: (e) {
+      ifLeft: (ApiError e) {
         error = ErrorResponse(error: e);
         return error.toResponse();
       },
-      ifRight: (userDto) {
+      ifRight: (userEntity) {
         return SuccessResponse(
-          data: userDto.copyWith(
-            token: JwtUtil.generateJwt(userDto),
-            rToken: JwtUtil.generateRefeshJwt(userDto),
-          ),
+          data: userEntity,
         ).toResponse();
       },
     );

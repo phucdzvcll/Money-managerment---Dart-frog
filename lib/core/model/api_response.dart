@@ -1,6 +1,7 @@
 import 'package:dart_frog/dart_frog.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mm/core/model/base_dto.dart';
+import 'package:mm/core/model/base_entity.dart';
 
 part 'api_response.g.dart';
 
@@ -16,12 +17,25 @@ sealed class ApiResponse {
 class SuccessResponse extends ApiResponse {
   const SuccessResponse({required this.data}) : super(code: 200, success: true);
 
-  final BaseDto data;
+  final BaseEntity data;
 
   Map<String, dynamic> toJson() => {
         'code': code,
         'success': success,
         'data': data.toJson(),
+      };
+}
+
+class SuccessListResponse extends ApiResponse {
+  const SuccessListResponse({required this.data})
+      : super(code: 200, success: true);
+
+  final List<BaseDto> data;
+
+  Map<String, dynamic> toJson() => {
+        'code': code,
+        'success': success,
+        'data': (data.map((e) => e.toJson())).toList(),
       };
 }
 
@@ -59,6 +73,7 @@ extension ApiResponseSuccessExtension on ApiResponse {
     final body = switch (this) {
       SuccessResponse() => (this as SuccessResponse).toJson(),
       ErrorResponse() => (this as ErrorResponse).toJson(),
+      SuccessListResponse() => (this as SuccessListResponse).toJson(),
     };
     return Response.json(
       statusCode: code,
@@ -67,3 +82,9 @@ extension ApiResponseSuccessExtension on ApiResponse {
     );
   }
 }
+
+final emptyResponse = Response.json(
+  statusCode: 200,
+  body: const <String, dynamic>{},
+  headers: const <String, Object>{},
+);

@@ -8,15 +8,14 @@ part 'credit_dto.g.dart';
 @freezed
 abstract class CreditDto with _$CreditDto implements BaseDto {
   const factory CreditDto({
-    int? id,
-    required int userId,
+    required int id,
+    @JsonKey(name: 'user_id') required int userId,
     required String source,
-    required double limitAmount,
-    required double usedAmount,
-    DateTime? dueDate,
-    double? interestRate,
-    DateTime? createdAt,
-    DateTime? updatedAt,
+    @JsonKey(name: 'limit_amount') required double limitAmount,
+    @JsonKey(name: 'due_date') required String dueDate,
+    @JsonKey(name: 'statement_date') required String statementDate,
+    @JsonKey(name: 'created_at') DateTime? createdAt,
+    @JsonKey(name: 'updated_at') DateTime? updatedAt,
   }) = _CreditDto;
 
   factory CreditDto.fromJson(Map<String, dynamic> json) =>

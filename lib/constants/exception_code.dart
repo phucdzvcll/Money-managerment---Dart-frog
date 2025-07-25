@@ -7,6 +7,9 @@
 //prefix = 10 (COMMON ERROR)
 const UNKNOWN_ERROR = '10_2025_1';
 
+//prefix = 20 (COMMON ERROR)
+const SERVER_ERROR = '20_2025_1';
+
 //prefix = 40
 const USER_NOT_FOUND = '40_2025_1';
 const PASSWORD_INCORRECT = '40_2025_2';

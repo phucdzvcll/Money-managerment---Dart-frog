@@ -11,15 +11,14 @@ CREATE TABLE users
 -- Bảng tín dụng (credit card)
 CREATE TABLE credits
 (
-    id            SERIAL PRIMARY KEY,
-    user_id       INT REFERENCES users (id) ON DELETE CASCADE,
-    source        VARCHAR(100)   NOT NULL,
-    limit_amount  DECIMAL(12, 2) NOT NULL,
-    used_amount   DECIMAL(12, 2) DEFAULT 0,
-    due_date      DATE,
-    interest_rate DECIMAL(5, 2),
-    created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    id             SERIAL PRIMARY KEY,
+    user_id        INT REFERENCES users (id) ON DELETE CASCADE,
+    source         VARCHAR(100)   NOT NULL,
+    limit_amount   DECIMAL(12, 2) NOT NULL,
+    due_date       VARCHAR(2)     NOT NULL,
+    statement_date VARCHAR(2)     NOT NULL,
+    created_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Bảng giao dịch chi tiêu / thu nhập
@@ -54,7 +53,7 @@ CREATE TABLE installments
     monthly_amount DECIMAL(12, 2) NOT NULL,
     start_date     DATE           NOT NULL,
     months         INT            NOT NULL,
-    is_completed   BOOLEAN DEFAULT FALSE,
+    is_completed   BOOLEAN   DEFAULT FALSE,
     credit_id      INT REFERENCES credits (id), -- nullable nếu không dùng thẻ tín dụng
     created_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -63,13 +62,13 @@ CREATE TABLE installments
 -- Bảng nợ
 CREATE TABLE debts
 (
-    id       SERIAL PRIMARY KEY,
-    user_id  INT REFERENCES users (id) ON DELETE CASCADE,
-    person   VARCHAR(100)                                     NOT NULL,
-    amount   DECIMAL(12, 2)                                   NOT NULL,
-    type     VARCHAR(10) CHECK (type IN ('lent', 'borrowed')) NOT NULL,
-    due_date DATE,
-    is_paid  BOOLEAN DEFAULT FALSE,
-    created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    id         SERIAL PRIMARY KEY,
+    user_id    INT REFERENCES users (id) ON DELETE CASCADE,
+    person     VARCHAR(100)                                     NOT NULL,
+    amount     DECIMAL(12, 2)                                   NOT NULL,
+    type       VARCHAR(10) CHECK (type IN ('lent', 'borrowed')) NOT NULL,
+    due_date   DATE,
+    is_paid    BOOLEAN   DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

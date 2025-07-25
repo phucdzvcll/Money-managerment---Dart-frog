@@ -1,6 +1,7 @@
 import 'package:dart_either/dart_either.dart';
 import 'package:mm/constants/exception_code.dart';
 import 'package:mm/core/model/api_response.dart';
+import 'package:postgres/postgres.dart';
 
 typedef ExecuteFunction<T> = Future<T> Function();
 
@@ -14,6 +15,8 @@ mixin ServiceMixin {
       return Either.right(result);
     } on ApiError catch (e) {
       return Either.left(e);
+    } on ServerException catch (e) {
+      return Either.left(ApiError(code: SERVER_ERROR, message: e.message));
     } catch (e) {
       return Either.left(ApiError(code: UNKNOWN_ERROR));
     }

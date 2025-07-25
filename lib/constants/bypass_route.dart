@@ -1,5 +1,5 @@
 List<String> bypassPath = [
-  'auth',
-  'docs',
-  'openapi',
+  '/auth',
+  '/docs',
+  '/openapi',
 ];
