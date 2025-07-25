@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:mm/utils/api_response.dart';
+import 'package:mm/utils/response/api_response.dart';
 
 part 'user_dto.freezed.dart';
 

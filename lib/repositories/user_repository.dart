@@ -1,4 +1,4 @@
-import 'package:mm/utils/password_util.dart';
+import 'package:mm/utils/auth/password_util.dart';
 import 'package:postgres/postgres.dart';
 
 class UserRepository {

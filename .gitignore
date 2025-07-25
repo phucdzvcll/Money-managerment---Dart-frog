@@ -20,12 +20,11 @@ coverage/.env*
 lib/constants/env.g.dart
 
 # Freezed & json_serializable generated files
-lib/**.g.dart
-lib/**.freezed.dart
+**.g.dart
+**.freezed.dart
 
 # build_runner generated files
-build/
-.dart_tool/
+.idea/
 
 # Log files
 *.log
