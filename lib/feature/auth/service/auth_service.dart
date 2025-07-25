@@ -1,10 +1,10 @@
 import 'package:dart_either/dart_either.dart';
 import 'package:mm/constants/exception_code.dart';
-import 'package:mm/models/user_dto.dart';
-import 'package:mm/repositories/user_repository.dart';
-import 'package:mm/utils/response/api_response.dart';
-import 'package:mm/utils/auth/password_util.dart';
-import 'package:mm/services/service_mixin.dart';
+import 'package:mm/core/service/service_mixin.dart';
+import 'package:mm/feature/auth/dto/user_dto.dart';
+import 'package:mm/feature/auth/repository/user_repository.dart';
+import 'package:mm/core/utils/auth/password_util.dart';
+import 'package:mm/core/model/api_response.dart';
 
 abstract class AuthService {
   Future<Either<ApiError, UserDto>> login(String username, String password);

@@ -1,6 +1,6 @@
 import 'package:dart_either/dart_either.dart';
 import 'package:mm/constants/exception_code.dart';
-import 'package:mm/utils/response/api_response.dart';
+import 'package:mm/core/model/api_response.dart';
 
 typedef ExecuteFunction<T> = Future<T> Function();
 

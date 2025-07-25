@@ -1,6 +1,6 @@
 import 'package:dart_frog/dart_frog.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:mm/models/base_dto.dart';
+import 'package:mm/core/model/base_dto.dart';
 
 part 'api_response.g.dart';
 

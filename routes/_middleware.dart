@@ -1,7 +1,7 @@
 import 'package:dart_frog/dart_frog.dart';
 import 'package:mm/constants/bypass_route.dart';
-import 'package:mm/services/database_connection.dart';
-import 'package:mm/utils/jwt/jwt.dart';
+import 'package:mm/core/service/database_connection.dart';
+import 'package:mm/core/utils/auth/jwt.dart';
 import 'package:postgres/postgres.dart';
 
 Middleware _dbMiddleware(Handler handler) {

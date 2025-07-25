@@ -1,6 +1,6 @@
 import 'package:mm/constants/env.dart';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
-import 'package:mm/models/user_dto.dart';
+import 'package:mm/feature/auth/dto/user_dto.dart';
 
 class JwtUtil {
   static final _assetsTokenKey = SecretKey(Env.jwtAccessSecret);

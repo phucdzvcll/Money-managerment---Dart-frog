@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:mm/models/base_dto.dart';
+import 'package:mm/core/model/base_dto.dart';
 
 part 'user_dto.freezed.dart';
 part 'user_dto.g.dart';

@@ -1,8 +1,8 @@
 import 'package:dart_frog/dart_frog.dart';
 import 'package:mm/constants/exception_code.dart';
-import 'package:mm/models/user_dto.dart';
-import 'package:mm/services/auth_service.dart';
-import 'package:mm/utils/response/api_response.dart';
+import 'package:mm/feature/auth/dto/user_dto.dart';
+import 'package:mm/feature/auth/service/auth_service.dart';
+import 'package:mm/core/model/api_response.dart';
 
 Future<Response> onRequest(RequestContext context) async {
   final service = await context.read<Future<AuthService>>();
