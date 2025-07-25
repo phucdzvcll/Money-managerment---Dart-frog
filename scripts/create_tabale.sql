@@ -5,9 +5,9 @@ CREATE TABLE users
     username      VARCHAR(50) UNIQUE NOT NULL,
     password_hash TEXT               NOT NULL,
     full_name     VARCHAR(100),
-    created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
 -- Bảng tín dụng (credit card)
 CREATE TABLE credits
 (
@@ -17,7 +17,9 @@ CREATE TABLE credits
     limit_amount  DECIMAL(12, 2) NOT NULL,
     used_amount   DECIMAL(12, 2) DEFAULT 0,
     due_date      DATE,
-    interest_rate DECIMAL(5, 2)
+    interest_rate DECIMAL(5, 2),
+    created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Bảng giao dịch chi tiêu / thu nhập
@@ -33,7 +35,7 @@ CREATE TABLE transactions
     is_credit   BOOLEAN   DEFAULT FALSE,
     credit_id   INT REFERENCES credits (id),
     created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
+    updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CHECK (
         -- Nếu là giao dịch tín dụng thì phải có credit_id
         (is_credit = TRUE AND credit_id IS NOT NULL)
@@ -53,7 +55,9 @@ CREATE TABLE installments
     start_date     DATE           NOT NULL,
     months         INT            NOT NULL,
     is_completed   BOOLEAN DEFAULT FALSE,
-    credit_id      INT REFERENCES credits (id) -- nullable nếu không dùng thẻ tín dụng
+    credit_id      INT REFERENCES credits (id), -- nullable nếu không dùng thẻ tín dụng
+    created_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Bảng nợ
@@ -65,5 +69,7 @@ CREATE TABLE debts
     amount   DECIMAL(12, 2)                                   NOT NULL,
     type     VARCHAR(10) CHECK (type IN ('lent', 'borrowed')) NOT NULL,
     due_date DATE,
-    is_paid  BOOLEAN DEFAULT FALSE
+    is_paid  BOOLEAN DEFAULT FALSE,
+    created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

@@ -25,6 +25,7 @@ lib/constants/env.g.dart
 
 # build_runner generated files
 .idea/
+.idea/*
 
 # Log files
 *.log

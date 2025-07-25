@@ -1,29 +1,42 @@
 import 'package:dart_frog/dart_frog.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-
-part 'api_response.freezed.dart';
+import 'package:mm/models/base_dto.dart';
 
 part 'api_response.g.dart';
 
-@Freezed(genericArgumentFactories: true)
-abstract class ApiResponse<T extends ApiResponseBase> with _$ApiResponse<T> {
-  const factory ApiResponse.success({
-    required bool success,
-    @Default(200) int code,
-    required T data,
-  }) = ApiSuccess<T>;
+part 'api_response.freezed.dart';
 
-  const factory ApiResponse.error({
-    required bool success,
-    @Default(500) int code,
-    required ApiError error,
-  }) = ApiErrorResponse<T>;
+sealed class ApiResponse {
+  const ApiResponse({required this.code, required this.success});
 
-  factory ApiResponse.fromJson(
-    Map<String, dynamic> json,
-    T Function(Object?) fromJsonT,
-  ) =>
-      _$ApiResponseFromJson(json, fromJsonT);
+  final int code;
+  final bool success;
+}
+
+class SuccessResponse extends ApiResponse {
+  const SuccessResponse({required this.data}) : super(code: 200, success: true);
+
+  final BaseDto data;
+
+  Map<String, dynamic> toJson() => {
+        'code': code,
+        'success': success,
+        'data': data.toJson(),
+      };
+}
+
+class ErrorResponse extends ApiResponse {
+  const ErrorResponse({required this.error, this.code = 500})
+      : super(code: code, success: false);
+
+  final ApiError error;
+  final int code;
+
+  Map<String, dynamic> toJson() => {
+        'code': code,
+        'success': success,
+        'error': error.toJson(),
+      };
 }
 
 @freezed
@@ -36,62 +49,21 @@ abstract class ApiError with _$ApiError implements Exception {
   factory ApiError.fromJson(Map<String, dynamic> json) =>
       _$ApiErrorFromJson(json);
 }
-//
-// extension ApiResponseErrorExtension on ApiResponse<dynamic> {
-//   Response toErrorResponse({
-//     int statusCode = 500,
-//     Map<String, Object> headers = const <String, Object>{},
-//   }) {
-//     return Response.json(
-//       statusCode: statusCode,
-//       body: toJson((e) => {}),
-//       headers: {
-//         ...headers,
-//         'Content-Type': 'application/json',
-//       },
-//     );
-//   }
-// }
 
 typedef ToJson<T> = Map<String, dynamic> Function(T e);
 
-extension ApiResponseSuccessExtension<T extends ApiResponseBase>
-    on ApiResponse<T> {
+extension ApiResponseSuccessExtension on ApiResponse {
   Response toResponse({
-    int statusCode = 200,
     Map<String, Object> headers = const <String, Object>{},
   }) {
-    return when(success: (
-      bool success,
-      code,
-      data,
-    ) {
-      return Response.json(
-        statusCode: code,
-        body: data.toJson(),
-        headers: {
-          ...headers,
-          'Content-Type': 'application/json',
-        },
-      );
-    }, error: (_, code, ApiError error) {
-      return Response.json(
-        statusCode: code,
-        body: {
-          'success': false,
-          'code': code,
-          'error': error.toJson(),
-        },
-        headers: {
-          ...headers,
-          'Content-Type': 'application/json',
-        },
-      );
-    });
+    final body = switch (this) {
+      SuccessResponse() => (this as SuccessResponse).toJson(),
+      ErrorResponse() => (this as ErrorResponse).toJson(),
+    };
+    return Response.json(
+      statusCode: code,
+      headers: headers,
+      body: body,
+    );
   }
-}
-
-abstract class ApiResponseBase {
-  const ApiResponseBase();
-  Map<String, dynamic> toJson();
 }

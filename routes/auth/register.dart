@@ -11,25 +11,20 @@ Future<Response> onRequest(RequestContext context) async {
   final username = body['username']?.toString().trim();
   final password = body['password']?.toString();
   final fullName = body['full_name']?.toString();
-  ApiResponse<ApiResponseBase>? error;
+  ErrorResponse error;
   if (username == null || username.isEmpty) {
-    error = const ApiResponse.error(
-        success: false, error: ApiError(code: USER_NAME_IS_EMPTY));
+    error = const ErrorResponse(error: ApiError(code: USER_NAME_IS_EMPTY));
   } else if (password == null || password.isEmpty) {
-    error = const ApiResponse.error(
-        success: false, error: ApiError(code: PASSWORD_IS_EMPTY));
+    error = const ErrorResponse(error: ApiError(code: PASSWORD_IS_EMPTY));
   } else {
     final result = await service.signUp(username, password, fullName);
     return result.fold(
       ifLeft: (e) {
-        error = ApiResponse.error(success: false, error: e);
-        return Response.json(
-          body: error!.toJson((e) => {}),
-        );
+        error = ErrorResponse(error: e);
+        return error.toResponse();
       },
       ifRight: (r) {
-        return ApiResponse<UserDto>.success(
-          success: true,
+        return SuccessResponse(
           data: UserDto(username: username, fullName: fullName),
         ).toResponse();
       },
