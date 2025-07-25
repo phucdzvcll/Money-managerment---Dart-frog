@@ -1,4 +1,3 @@
-import 'package:mm/utils/auth/password_util.dart';
 import 'package:postgres/postgres.dart';
 
 class UserRepository {
@@ -21,7 +20,6 @@ class UserRepository {
     required String password,
     String? fullName,
   }) async {
-    final passwordHash = PasswordUtil.generatePasswordHash(password);
     await _connection.execute(
       Sql.named('''
       INSERT INTO users (username, password_hash, full_name)
@@ -29,7 +27,7 @@ class UserRepository {
       '''),
       parameters: {
         'username': username,
-        'password_hash': passwordHash,
+        'password_hash': password,
         'full_name': fullName,
       },
     );

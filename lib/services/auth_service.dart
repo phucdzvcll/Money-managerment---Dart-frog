@@ -1,14 +1,19 @@
 import 'package:dart_either/dart_either.dart';
 import 'package:mm/constants/exception_code.dart';
+import 'package:mm/models/user_dto.dart';
 import 'package:mm/repositories/user_repository.dart';
 import 'package:mm/utils/response/api_response.dart';
 import 'package:mm/utils/auth/password_util.dart';
 import 'package:mm/services/service_mixin.dart';
 
 abstract class AuthService {
-  Future<Either<ApiError, bool>> login(String username, String password);
+  Future<Either<ApiError, UserDto>> login(String username, String password);
 
-  Future<Either<ApiError, bool>> signUp(String username, String password);
+  Future<Either<ApiError, bool>> signUp(
+    String username,
+    String password,
+    String? fullName,
+  );
 }
 
 class AuthServiceImpl extends AuthService with ServiceMixin {
@@ -17,7 +22,7 @@ class AuthServiceImpl extends AuthService with ServiceMixin {
   final UserRepository _userRepository;
 
   @override
-  Future<Either<ApiError, bool>> login(String username, String password) async {
+  Future<Either<ApiError, UserDto>> login(String username, String password) async {
     return call(
       fn: () async {
         final user = await _userRepository.getUserByUsername(username);
@@ -26,31 +31,39 @@ class AuthServiceImpl extends AuthService with ServiceMixin {
         }
 
         final passwordHash = user['password_hash'] as String;
-        final isValid = PasswordUtil.verifyPassword(password, passwordHash);
+        final isValid = PasswordUtil.verifyPassword(
+          inputPassword: password,
+          dbValue: passwordHash,
+        );
         if (!isValid) {
           throw const ApiError(code: PASSWORD_INCORRECT);
         }
-        return true;
+        return UserDto.fromJson(user);
       },
     );
   }
 
   @override
   Future<Either<ApiError, bool>> signUp(
-      String username, String password) async {
+    String username,
+    String password,
+    String? fullName,
+  ) async {
     final isTaken = await _userRepository.isUsernameOrEmailTaken(username, '');
     if (isTaken) {
       return const Either.left(ApiError(code: USERNAME_ALREADY_TAKEN));
     }
     if (!PasswordUtil.isValidPassword(password)) {
-      return const Either.left(ApiError(code: PASSWORD_INCORRECT, message: 'Password does not meet complexity requirements.'));
+      return const Either.left(ApiError(
+          code: PASSWORD_INCORRECT,
+          message: 'Password does not meet complexity requirements.'));
     }
     final hashedPassword = PasswordUtil.generatePasswordHash(password);
 
     await _userRepository.createUser(
       username: username,
       password: hashedPassword,
-      fullName: '',
+      fullName: fullName,
     );
     return const Either.right(true);
   }

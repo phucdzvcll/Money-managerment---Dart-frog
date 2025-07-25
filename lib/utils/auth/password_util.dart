@@ -1,5 +1,5 @@
 import 'package:conduit_password_hash/pbkdf2.dart';
-import 'package:conduit_password_hash/salt.dart' as Salt;
+import 'package:mm/constants/env.dart';
 
 class PasswordUtil {
   /// Validates if the given password meets the criteria:
@@ -20,22 +20,16 @@ class PasswordUtil {
   static const _hashLength = 16;
 
   static String generatePasswordHash(String password) {
-    final salt = Salt.generateAsBase64String(32);
-    final hashed =
-        _generator.generateBase64Key(password, salt, _iterations, _hashLength);
-    return '$salt:$hashed';
+    final hashed = _generator.generateBase64Key(
+        password, Env.passwordSaltKey, _iterations, _hashLength);
+    return '${Env.passwordSaltKey}:$hashed';
   }
 
-  static bool verifyPassword(String inputPassword, String storedSaltAndHash) {
-    final parts = storedSaltAndHash.split(':');
-    if (parts.length != 2) return false;
-
-    final salt = parts[0];
-    final storedHash = parts[1];
-
-    final inputHash = _generator.generateBase64Key(
-        inputPassword, salt, _iterations, _hashLength);
-
-    return inputHash == storedHash;
+  static bool verifyPassword({
+    required String inputPassword,
+    required String dbValue,
+  }) {
+    final pass = generatePasswordHash(inputPassword);
+    return pass == dbValue;
   }
 }

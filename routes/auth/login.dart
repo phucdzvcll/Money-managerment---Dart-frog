@@ -29,11 +29,7 @@ Future<Response> onRequest(RequestContext context) async {
           body: error!.toJson((e) => {}),
         );
       },
-      ifRight: (r) {
-        final userDto = UserDto(
-          username: username,
-          fullName: '', // You may want to fetch the actual full name from DB if available
-        );
+      ifRight: (userDto) {
         return ApiResponse<UserDto>.success(
           success: true,
           data: userDto.copyWith(

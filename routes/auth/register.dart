@@ -19,7 +19,7 @@ Future<Response> onRequest(RequestContext context) async {
     error = const ApiResponse.error(
         success: false, error: ApiError(code: PASSWORD_IS_EMPTY));
   } else {
-    final result = await service.signUp(username, password);
+    final result = await service.signUp(username, password, fullName);
     return result.fold(
       ifLeft: (e) {
         error = ApiResponse.error(success: false, error: e);

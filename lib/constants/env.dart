@@ -21,4 +21,7 @@ abstract class Env {
 
   @EnviedField(varName: 'JWT_REFRESH_SECRET')
   static const String jwtRefreshSecret = _Env.jwtRefreshSecret;
+
+  @EnviedField(varName: 'PASSWORD_SALT_KEY')
+  static const String passwordSaltKey = _Env.passwordSaltKey;
 }
