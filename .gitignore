@@ -1,0 +1,31 @@
+# See https://www.dartlang.org/guides/libraries/private-files
+
+# Files and directories created by the Operating System
+.DS_Store
+
+# Files and directories created by pub
+.dart_tool/
+.packages
+pubspec.lock
+
+# Files and directories created by dart_frog
+build/
+.dart_frog
+
+# Test related files
+coverage/.env*
+
+# Envied generated files and .env
+.env
+lib/constants/env.g.dart
+
+# Freezed & json_serializable generated files
+lib/**.g.dart
+lib/**.freezed.dart
+
+# build_runner generated files
+build/
+.dart_tool/
+
+# Log files
+*.log
