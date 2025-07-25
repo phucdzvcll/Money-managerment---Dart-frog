@@ -1,5 +1,5 @@
 abstract class BaseDto {
-  int get id;
+  int? get id;
   DateTime? get createdAt;
   DateTime? get updatedAt;
 

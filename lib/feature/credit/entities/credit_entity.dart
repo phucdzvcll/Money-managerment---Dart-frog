@@ -1,15 +1,14 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:mm/core/model/base_dto.dart';
-import 'package:mm/feature/credit/entities/credit_entity.dart';
+import 'package:mm/core/model/base_entity.dart';
+import 'package:mm/feature/credit/dto/credit_dto.dart';
 
-part 'credit_dto.freezed.dart';
-
-part 'credit_dto.g.dart';
+part 'credit_entity.freezed.dart';
+part 'credit_entity.g.dart';
 
 @freezed
-abstract class CreditDto with _$CreditDto implements BaseDto {
-  const factory CreditDto({
-    int? id,
+abstract class CreditEntity with _$CreditEntity implements BaseEntity {
+  const factory CreditEntity({
+    required int id,
     @JsonKey(name: 'user_id') required int userId,
     required String source,
     @JsonKey(name: 'limit_amount') required double limitAmount,
@@ -17,16 +16,15 @@ abstract class CreditDto with _$CreditDto implements BaseDto {
     @JsonKey(name: 'statement_date') required String statementDate,
     @JsonKey(name: 'created_at') DateTime? createdAt,
     @JsonKey(name: 'updated_at') DateTime? updatedAt,
-  }) = _CreditDto;
+  }) = _CreditEntity;
 
-  factory CreditDto.fromJson(Map<String, dynamic> json) =>
-      _$CreditDtoFromJson(json);
+  factory CreditEntity.fromJson(Map<String, dynamic> json) =>
+      _$CreditEntityFromJson(json);
 }
 
-extension CreditDtoExtension on CreditDto {
-  CreditEntity get toEntity {
-    return CreditEntity(
-      id: id ?? -1,
+extension CreditEntityExtension on CreditEntity {
+  CreditDto get toDto {
+    return CreditDto(
       userId: userId,
       source: source,
       limitAmount: limitAmount,

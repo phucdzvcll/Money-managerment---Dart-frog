@@ -6,6 +6,7 @@
 * */
 //prefix = 10 (COMMON ERROR)
 const UNKNOWN_ERROR = '10_2025_1';
+const NOT_FOUND = '10_2025_2';
 
 //prefix = 20 (COMMON ERROR)
 const SERVER_ERROR = '20_2025_1';

@@ -27,6 +27,7 @@ class AuthServiceImpl extends AuthService with ServiceMixin {
   Future<Either<ApiError, UserEntity>> login(
       String username, String password) async {
     return call(
+      mapper: (e) => e,
       fn: () async {
         final user = await _userRepository.getUserByUsername(username);
 
