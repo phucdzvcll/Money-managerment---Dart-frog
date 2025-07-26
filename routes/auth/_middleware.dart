@@ -4,15 +4,15 @@ import 'package:mm/feature/auth/service/auth_service.dart';
 import 'package:postgres/postgres.dart';
 
 Middleware _userRepositoryMiddleware(Handler handler) {
-  return provider<Future<UserRepository>>((context) async {
-    final connection = await context.read<Future<Connection>>();
+  return provider<UserRepository>((context) {
+    final connection = context.read<Connection>();
     return UserRepository(connection);
   });
 }
 
 Middleware _authServiceMiddleware(Handler handler) {
-  return provider<Future<AuthService>>((ctx) async {
-    final userRepository = await ctx.read<Future<UserRepository>>();
+  return provider<AuthService>((ctx) {
+    final userRepository = ctx.read<UserRepository>();
     return AuthServiceImpl(userRepository);
   });
 }

@@ -4,7 +4,7 @@ import 'package:mm/core/model/api_response.dart';
 import 'package:mm/feature/auth/service/auth_service.dart';
 
 Future<Response> onRequest(RequestContext context) async {
-  final service = await context.read<Future<AuthService>>();
+  final service = context.read<AuthService>();
 
   final body = await context.request.json() as Map<String, dynamic>;
   final username = body['username']?.toString().trim();

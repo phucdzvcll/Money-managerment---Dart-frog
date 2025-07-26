@@ -1,15 +1,6 @@
 import 'package:dart_frog/dart_frog.dart';
 import 'package:mm/constants/bypass_route.dart';
-import 'package:mm/core/service/database_connection.dart';
 import 'package:mm/core/utils/auth/jwt.dart';
-import 'package:postgres/postgres.dart';
-
-Middleware _dbMiddleware(Handler handler) {
-  return provider<Future<Connection>>((ctx) async {
-    final connection = await db();
-    return connection;
-  });
-}
 
 bool shouldByPass(String path) {
   for (final e in bypassPath) {
@@ -22,7 +13,7 @@ bool shouldByPass(String path) {
 
 Middleware jwtMiddleware() {
   return (handler) {
-    return (context) async {
+    return (context) {
       final path = context.request.uri.path;
       if (shouldByPass(path)) {
         return handler(context);
@@ -52,5 +43,5 @@ Middleware jwtMiddleware() {
 }
 
 Handler middleware(Handler handler) {
-  return handler.use(_dbMiddleware(handler)).use(jwtMiddleware());
+  return handler.use(jwtMiddleware());
 }
