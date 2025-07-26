@@ -44,18 +44,24 @@ class SqlUtil {
     return result.map((row) => fromJson(row.toColumnMap())).toList();
   }
 
-  static Future<void> create({
+  static Future<int> create({
     required String table,
     required Map<String, dynamic> data,
     required Connection connection,
   }) async {
     final columns = data.keys.join(', ');
     final values = data.keys.map((k) => '@$k').join(', ');
-    final sql = 'INSERT INTO $table ($columns) VALUES ($values)';
-    await connection.execute(
+    final sql = 'INSERT INTO $table ($columns) VALUES ($values) RETURNING id';
+    final result = await connection.execute(
       Sql.named(sql),
       parameters: data,
     );
+    final data2 = result.map((row) => row.toColumnMap()).toList();
+    if (data2.isEmpty) {
+      return -1;
+    } else {
+      return data2.first['id'] as int;
+    }
   }
 
   static Future<void> update({

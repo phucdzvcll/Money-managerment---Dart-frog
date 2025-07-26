@@ -1,11 +1,9 @@
 import 'package:dart_frog/dart_frog.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mm/core/model/base_dto.dart';
-import 'package:mm/core/model/base_entity.dart';
-
-part 'api_response.g.dart';
 
 part 'api_response.freezed.dart';
+part 'api_response.g.dart';
 
 sealed class ApiResponse {
   const ApiResponse({required this.code, required this.success});
@@ -17,7 +15,7 @@ sealed class ApiResponse {
 class SuccessResponse extends ApiResponse {
   const SuccessResponse({required this.data}) : super(code: 200, success: true);
 
-  final BaseEntity data;
+  final BaseResponseDto data;
 
   Map<String, dynamic> toJson() => {
         'code': code,

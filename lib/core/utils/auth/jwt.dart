@@ -1,6 +1,5 @@
 import 'package:mm/constants/env.dart';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
-import 'package:mm/feature/auth/dto/user_dto.dart';
 import 'package:mm/feature/auth/entities/user_entity.dart';
 
 class JwtUtil {
@@ -11,36 +10,23 @@ class JwtUtil {
     try {
       final jwt = JWT.verify(token, _assetsTokenKey);
       final payload = jwt.payload;
-      return UserEntity(
-        id: payload['id'] as int,
-        username: payload['username'] as String?,
-        fullName: payload['full_name'] as String?,
-        token: token,
-      );
+      return UserEntity.fromJson(payload as Map<String, dynamic>);
     } catch (e) {
       throw Exception('Invalid JWT: $e');
     }
   }
 
-  static String generateJwt(UserDto user) {
+  static String generateJwt(UserEntity user) {
     final jwt = JWT(
-      {
-        'username': user.username,
-        'full_name': user.fullName,
-        'id': user.id,
-      },
+      user.toJson(),
       issuer: 'mm',
     );
     return jwt.sign(_assetsTokenKey, expiresIn: const Duration(days: 1));
   }
 
-  static String generateRefeshJwt(UserDto user) {
+  static String generateRefeshJwt(UserEntity user) {
     final jwt = JWT(
-      {
-        'username': user.username,
-        'full_name': user.fullName,
-        'id': user.id,
-      },
+      user.toJson(),
       issuer: 'mm',
     );
     return jwt.sign(_refeshTokenKey, expiresIn: const Duration(days: 30));

@@ -1,5 +1,4 @@
 import 'package:mm/core/repository/base_repository.dart';
-import 'package:mm/feature/auth/entities/user_entity.dart';
 import 'package:mm/feature/credit/dto/credit_dto.dart';
 import 'package:mm/feature/credit/entities/credit_entity.dart';
 

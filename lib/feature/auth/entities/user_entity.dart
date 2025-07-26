@@ -1,21 +1,24 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mm/core/model/base_entity.dart';
+import 'package:mm/core/model/date_time_converter.dart';
 
 part 'user_entity.freezed.dart';
+
 part 'user_entity.g.dart';
 
 @freezed
 abstract class UserEntity with _$UserEntity implements BaseEntity {
   const factory UserEntity({
-    @JsonKey(name: 'userId') required int id,
-    @JsonKey(name: 'username') String? username,
+    @JsonKey(name: 'id') required int id,
+    @JsonKey(name: 'username') required String username,
+    @JsonKey(name: 'password_hash') required String passwordHash,
     @JsonKey(name: 'full_name') String? fullName,
-    @JsonKey(name: 'token') String? token,
-    @JsonKey(name: 'rToken') String? rToken,
+    @JsonKey(name: 'created_at', fromJson: DateTimeConverter.fromJson)
     DateTime? createdAt,
+    @JsonKey(name: 'updated_at', fromJson: DateTimeConverter.fromJson)
     DateTime? updatedAt,
   }) = _UserEntity;
 
-  factory UserEntity.fromJson(Map<String, Object?> json) => _$UserEntityFromJson(json);
+  factory UserEntity.fromJson(Map<String, Object?> json) =>
+      _$UserEntityFromJson(json);
 }
-

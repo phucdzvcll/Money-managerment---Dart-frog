@@ -3,10 +3,15 @@ import 'package:mm/constants/exception_code.dart';
 import 'package:mm/core/model/api_response.dart';
 import 'package:mm/core/model/base_dto.dart';
 import 'package:mm/core/model/base_entity.dart';
+import 'package:mm/core/repository/base_repository.dart';
 import 'package:mm/core/service/service_mixin.dart';
 
-abstract base class BaseService<O extends BaseEntity, I extends BaseDto>
-    with ServiceMixin {
+abstract base class BaseService<O extends BaseEntity, I extends BaseDto,
+    R extends BaseRepository<I, O>> with ServiceMixin {
+  const BaseService(this.repository);
+
+  final R repository;
+
   O mapper(I dto);
 
   I converter(O entity);

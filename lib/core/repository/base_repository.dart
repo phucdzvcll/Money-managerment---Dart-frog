@@ -17,22 +17,25 @@ abstract class BaseRepository<D extends BaseDto, E extends BaseEntity> {
   Map<String, dynamic> toJson(E entity);
 
   Future<List<E>> findAll() async {
-    return await SqlUtil.readAll<E>(
+    return SqlUtil.readAll<E>(
         table: tableName, connection: connection, fromJson: fromJson);
   }
 
-  Future<E?> findById(String id) async {
-    return await SqlUtil.read<E>(
+  Future<E?> findById(int id) async {
+    return SqlUtil.read<E>(
         table: tableName, connection: connection, fromJson: fromJson);
   }
 
-  Future<void> create(E entity) async => await SqlUtil.create(
-        table: tableName,
-        data: toJson(entity),
-        connection: connection,
-      );
+  Future<E> create(E entity) async {
+    final id = await SqlUtil.create(
+      table: tableName,
+      data: toJson(entity),
+      connection: connection,
+    );
+    return (await findById(id))!;
+  }
 
-  Future<void> update(String id, E entity) async {
+  Future<E> update(int id, E entity) async {
     await SqlUtil.update(
       connection: connection,
       table: tableName,
@@ -42,6 +45,7 @@ abstract class BaseRepository<D extends BaseDto, E extends BaseEntity> {
         'id': id,
       },
     );
+    return (await findById(entity.id))!;
   }
 
   Future<void> delete(String id) async {

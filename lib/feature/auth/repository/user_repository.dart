@@ -1,7 +1,7 @@
 import 'package:mm/constants/exception_code.dart';
 import 'package:mm/core/model/api_response.dart';
 import 'package:mm/core/utils/sql/sql_util.dart';
-import 'package:mm/feature/auth/dto/user_dto.dart';
+import 'package:mm/feature/auth/entities/user_entity.dart';
 import 'package:postgres/postgres.dart';
 
 class UserRepository {
@@ -37,11 +37,11 @@ class UserRepository {
     );
   }
 
-  Future<UserDto> getUserByUsername(String username) async {
-    final result = await SqlUtil.read<UserDto>(
+  Future<UserEntity> getUserByUsername(String username) async {
+    final result = await SqlUtil.read<UserEntity>(
       table: 'users',
       connection: _connection,
-      fromJson: UserDto.fromJson,
+      fromJson: UserEntity.fromJson,
       where: "username = '$username'",
     );
 

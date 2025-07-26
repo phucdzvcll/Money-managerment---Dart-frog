@@ -4,12 +4,12 @@ import 'package:mm/feature/credit/entities/credit_entity.dart';
 import 'package:mm/feature/credit/repository/credit_repository.dart';
 
 abstract base class CreditService
-    extends BaseService<CreditEntity, CreditDto> {}
+    extends BaseService<CreditEntity, CreditDto, CreditRepository> {
+  CreditService(super.repository);
+}
 
 base class CreditServiceImpl extends CreditService {
-  CreditServiceImpl(this.repository);
-
-  final CreditRepository repository;
+  CreditServiceImpl(super.repository);
 
   @override
   Future<CreditEntity> create(CreditDto entity) {
