@@ -20,7 +20,7 @@ Future<Response> onRequest(RequestContext context) async {
     final result = await service.login(username, password);
     return result.fold(
       ifLeft: (ApiError e) {
-        error = ErrorResponse(error: e);
+        error = ErrorResponse(error: e, code: 400);
         return error.toResponse();
       },
       ifRight: (userEntity) {

@@ -37,13 +37,15 @@ Middleware jwtMiddleware() {
       }
 
       final token = authHeader.substring(7);
-      final userData = JwtUtil.verifyJwt(token);
-      if (!userData) {
+      final tokenIsValid = JwtUtil.verifyJwt(token);
+      if (!tokenIsValid) {
         return Response.json(
           statusCode: 401,
           body: {'error': 'Invalid or expired token'},
         );
       }
+      final userData = JwtUtil.decodeJwt(token);
+
       return handler(context.provide(() => userData));
     };
   };

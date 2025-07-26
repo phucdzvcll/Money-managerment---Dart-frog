@@ -1,14 +1,17 @@
 import 'package:mm/core/repository/base_repository.dart';
+import 'package:mm/feature/auth/entities/user_entity.dart';
 import 'package:mm/feature/credit/dto/credit_dto.dart';
 import 'package:mm/feature/credit/entities/credit_entity.dart';
 
 abstract class CreditRepository
     extends BaseRepository<CreditDto, CreditEntity> {
-  CreditRepository(super.connection, super.tableName);
+  CreditRepository(super.connection, super.tableName, super.userEntity);
 }
 
 class CreditRepositoryImpl extends CreditRepository {
-  CreditRepositoryImpl(super.connection, super.tableName);
+  CreditRepositoryImpl(super.connection, super.tableName, super.userEntity);
+
+
 
   @override
   CreditEntity fromJson(Map<String, dynamic> json) {
