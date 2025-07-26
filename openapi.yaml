@@ -46,6 +46,27 @@ paths:
           description: Registration successful
         '400':
           description: Registration failed
+  /credits:
+    post:
+      summary: User registration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+                full_name:
+                  type: string
+      responses:
+        '200':
+          description: Registration successful
+        '400':
+          description: Registration failed
   /test:
     get:
       summary: JWT test route

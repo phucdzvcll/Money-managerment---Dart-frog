@@ -10,7 +10,12 @@ class JwtUtil {
     try {
       final jwt = JWT.verify(token, _assetsTokenKey);
       final payload = jwt.payload;
-      return UserEntity.fromJson(payload as Map<String, dynamic>);
+      return UserEntity(
+        id: payload['id'] as int,
+        passwordHash: payload['password_hash'] as String,
+        username: payload['username'] as String,
+        fullName: payload['full_name'] as String?,
+      );
     } catch (e) {
       throw Exception('Invalid JWT: $e');
     }

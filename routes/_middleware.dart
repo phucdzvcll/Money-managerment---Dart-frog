@@ -36,7 +36,6 @@ Middleware jwtMiddleware() {
         );
       }
       final userData = JwtUtil.decodeJwt(token);
-
       return handler(context.provide(() => userData));
     };
   };

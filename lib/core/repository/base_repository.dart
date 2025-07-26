@@ -1,11 +1,10 @@
-import 'package:mm/core/model/base_dto.dart';
 import 'package:mm/core/model/base_entity.dart';
 import 'package:mm/core/utils/sql/sql_util.dart';
 import 'package:mm/feature/auth/entities/user_entity.dart';
 import 'package:postgres/postgres.dart';
 
 /// Base repository for CRUD operations. Extend this for each feature.
-abstract class BaseRepository<D extends BaseDto, E extends BaseEntity> {
+abstract class BaseRepository<E extends BaseEntity> {
   final Connection connection;
   final String tableName;
   final UserEntity userEntity;

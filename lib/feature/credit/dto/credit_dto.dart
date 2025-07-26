@@ -1,13 +1,11 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:mm/core/model/base_dto.dart';
 import 'package:mm/feature/credit/entities/credit_entity.dart';
 
 part 'credit_dto.freezed.dart';
-
 part 'credit_dto.g.dart';
 
 @freezed
-abstract class CreditDto with _$CreditDto implements BaseDto {
+abstract class CreditDto with _$CreditDto {
   const factory CreditDto({
     int? id,
     @JsonKey(name: 'user_id') required int userId,

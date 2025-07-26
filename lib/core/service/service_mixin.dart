@@ -13,7 +13,6 @@ mixin ServiceMixin {
   }) async {
     try {
       final result = await fn.call();
-
       return Either.right(mapper(result));
     } on ApiError catch (e) {
       return Either.left(e);

@@ -28,7 +28,7 @@ class SuccessListResponse extends ApiResponse {
   const SuccessListResponse({required this.data})
       : super(code: 200, success: true);
 
-  final List<BaseDto> data;
+  final List<BaseResponseDto> data;
 
   Map<String, dynamic> toJson() => {
         'code': code,
