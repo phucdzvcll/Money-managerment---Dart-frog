@@ -1,0 +1,45 @@
+targets:
+  $default:
+    builders:
+      mm|request_builder:
+        generate_for:
+          - lib/**
+      mm|combine_builder:
+        generate_for:
+          - lib/openapi.dart
+      mm|openapi_schema:
+        generate_for:
+          - lib/**.dart
+
+builders:
+  openapi_schema:
+    import: "package:mm/builder/builder.dart"
+    builder_factories: [ "openApiSchemaBuilder" ]
+    build_extensions: { ".dart": [ ".openapi_schema.json" ] }
+    auto_apply: root_package
+    build_to: source
+    runs_before:
+      - mm|request_builder
+      - mm|combine_builder
+
+  request_builder:
+    import: "package:mm/builder/builder.dart"
+    builder_factories: [ "openApiBuilder" ]
+    build_extensions: { ".dart": [ ".openapi.json" ] }
+    auto_apply: root_package
+    build_to: source
+    runs_before:
+      - mm|combine_builder
+
+  combine_builder:
+    import: "package:mm/builder/builder.dart"
+    builder_factories: [ "openApiCombinerBuilder" ]
+    build_extensions: { ".dart": [ ".json" ] }
+    auto_apply: root_package
+    build_to: source
+
+
+
+
+
+

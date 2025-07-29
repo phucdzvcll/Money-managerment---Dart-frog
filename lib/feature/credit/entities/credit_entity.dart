@@ -3,6 +3,7 @@ import 'package:mm/core/model/base_entity.dart';
 import 'package:mm/feature/credit/dto/credit_dto.dart';
 
 part 'credit_entity.freezed.dart';
+
 part 'credit_entity.g.dart';
 
 @freezed
@@ -30,8 +31,6 @@ extension CreditEntityExtension on CreditEntity {
       limitAmount: limitAmount,
       dueDate: dueDate,
       statementDate: statementDate,
-      createdAt: createdAt,
-      updatedAt: updatedAt,
     );
   }
 }

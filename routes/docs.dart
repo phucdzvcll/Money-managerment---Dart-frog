@@ -1,6 +1,6 @@
 import 'package:dart_frog/dart_frog.dart';
 
-/// Serves the Swagger UI, configured to use /openapi.yaml as the spec.
+/// Serves the Swagger UI, configured to use /openapi.dart as the spec.
 Future<Response> onRequest(RequestContext context) async {
   final indexHtml = '''
 <!DOCTYPE html>

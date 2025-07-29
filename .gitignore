@@ -22,6 +22,8 @@ lib/constants/env.g.dart
 # Freezed & json_serializable generated files
 **.g.dart
 **.freezed.dart
+**.openapi.json
+**.openapi_schema.json
 
 # build_runner generated files
 .idea/

@@ -2,11 +2,11 @@ import 'dart:io';
 import 'package:dart_frog/dart_frog.dart';
 
 Future<Response> onRequest(RequestContext context) async {
-  final file = File('openapi.yaml');
+  final file = File('lib/openapi.json');
   if (!await file.exists()) {
     return Response(statusCode: 404, body: 'OpenAPI spec not found');
   }
-  final yaml = await file.readAsString();
-  return Response(body: yaml, headers: {'content-type': 'text/yaml'});
+  final json = await file.readAsString();
+  return Response(body: json, headers: {'content-type': 'application/json'});
 }
 

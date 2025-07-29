@@ -1,9 +1,12 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:mm/builder/anotation.dart';
 import 'package:mm/feature/credit/entities/credit_entity.dart';
 
 part 'credit_dto.freezed.dart';
+
 part 'credit_dto.g.dart';
 
+@OpenApiSchema()
 @freezed
 abstract class CreditDto with _$CreditDto {
   const factory CreditDto({
@@ -13,8 +16,6 @@ abstract class CreditDto with _$CreditDto {
     @JsonKey(name: 'limit_amount') required double limitAmount,
     @JsonKey(name: 'due_date') required String dueDate,
     @JsonKey(name: 'statement_date') required String statementDate,
-    @JsonKey(name: 'created_at') DateTime? createdAt,
-    @JsonKey(name: 'updated_at') DateTime? updatedAt,
   }) = _CreditDto;
 
   factory CreditDto.fromJson(Map<String, dynamic> json) =>
@@ -30,8 +31,6 @@ extension CreditDtoExtension on CreditDto {
       limitAmount: limitAmount,
       dueDate: dueDate,
       statementDate: statementDate,
-      createdAt: createdAt,
-      updatedAt: updatedAt,
     );
   }
 }

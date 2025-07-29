@@ -42,5 +42,6 @@ Middleware jwtMiddleware() {
 }
 
 Handler middleware(Handler handler) {
-  return handler.use(jwtMiddleware());
+  // return handler.use(jwtMiddleware());
+  return handler;
 }
