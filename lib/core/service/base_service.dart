@@ -16,6 +16,7 @@ abstract base class BaseService<
   const BaseService(this.repository, this.mapper);
 
   final R repository;
+
   final M mapper;
 
   Future<List<E>> getAll() async {

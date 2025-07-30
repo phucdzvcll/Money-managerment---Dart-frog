@@ -26,9 +26,9 @@ Future<Response> reqiestWithId<
     switch (method) {
       case HttpMethod.get:
         return controller.executeFindById(id: requestId);
-      case HttpMethod.post:
       case HttpMethod.delete:
         return controller.executeDeleteById(id: requestId);
+      case HttpMethod.post:
       case HttpMethod.head:
       case HttpMethod.options:
       case HttpMethod.patch:
@@ -56,13 +56,15 @@ Future<Response> reqiestWithOutId<
     case HttpMethod.get:
       return controller.executeFindAll();
     case HttpMethod.post:
+      final body = await controller.body(context);
+      return controller.executeCreate(body);
+    case HttpMethod.put:
+      final body = await controller.body(context);
+      return controller.executeUpdate(body);
     case HttpMethod.delete:
     case HttpMethod.head:
     case HttpMethod.options:
     case HttpMethod.patch:
       return Response(statusCode: 405, body: 'Method Not Allowed');
-    case HttpMethod.put:
-      final body = await controller.body(context);
-      return controller.executeUpdate(body);
   }
 }

@@ -49,17 +49,43 @@ class DtoSchemaGenerator implements Builder {
     if (constructor == null) return schema;
 
     for (final param in constructor.parameters) {
-      final name = param.name;
-      final type = param.type;
+      final data = _getJsonKeyName(param);
+      if (!data.$2) {
+        final name = data.$1 ?? param.name;
+        final type = param.type;
 
-      schema['properties']![name] = _dartTypeToOpenApiSchema(type);
+        schema['properties']![name] = _dartTypeToOpenApiSchema(type);
 
-      if (param.isRequiredNamed || param.isRequiredPositional) {
-        schema['required']!.add(name);
+        if (param.isRequiredNamed || param.isRequiredPositional) {
+          schema['required']!.add(name);
+        }
       }
     }
 
     return schema;
+  }
+
+  (String?, bool) _getJsonKeyName(ParameterElement param) {
+    String? stringValue;
+    var isIgnore = false;
+    for (final meta in param.metadata) {
+      final element = meta.element;
+      if (element is ConstructorElement &&
+          element.enclosingElement3.name == 'JsonKey') {
+        final constantValue = meta.computeConstantValue();
+        stringValue = constantValue?.getField('name')?.toStringValue();
+        break;
+      }
+    }
+
+    for (final meta in param.metadata) {
+      final element = meta.element;
+      if (element is ConstructorElement &&
+          element.enclosingElement3.name == 'FieldIgnore') {
+        isIgnore = true;
+      }
+    }
+    return (stringValue, isIgnore);
   }
 
   Map<String, dynamic> _dartTypeToOpenApiSchema(DartType type) {

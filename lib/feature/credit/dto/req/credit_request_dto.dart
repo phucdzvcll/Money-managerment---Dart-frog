@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mm/builder/anotation.dart';
 import 'package:mm/core/model/base_dto.dart';
+import 'package:mm/core/model/numberic_converter.dart';
 
 part 'credit_request_dto.freezed.dart';
 
@@ -13,9 +14,10 @@ abstract class CreditRequestDto
     implements BaseRequestDto {
   const factory CreditRequestDto({
     int? id,
-    @JsonKey(name: 'user_id') int? userId,
+    @FieldIgnore() @JsonKey(name: 'user_id') int? userId,
     String? source,
-    @JsonKey(name: 'limit_amount') double? limitAmount,
+    @JsonKey(name: 'limit_amount', fromJson: NumbericConverter.fromJsonNullAble)
+    double? limitAmount,
     @JsonKey(name: 'due_date') String? dueDate,
     @JsonKey(name: 'statement_date') String? statementDate,
   }) = _CreditRequestDto;

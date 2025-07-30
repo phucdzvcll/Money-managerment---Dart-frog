@@ -11,16 +11,14 @@ import 'package:postgres/postgres.dart';
 Middleware createRepositoryMiddleware<T extends Object?>(
   T Function(
     Connection connection,
-    UserEntity userEntity,
   ) create,
 ) {
   return (handler) {
     return (context) => handler(
           context.provide(
             () {
-              final userEntity = context.read<UserEntity>();
               final connection = context.read<Connection>();
-              return create(connection, userEntity);
+              return create(connection);
             },
           ),
         );
@@ -71,14 +69,15 @@ Middleware createControllerMiddleware<
     M extends BaseMapper<RQ, E, RP>,
     S extends BaseService<E, RQ, RP, R, M>,
     C extends BaseController<E, RQ, RP, M, R, S>>(
-  C Function(S service) create,
+  C Function(S service, UserEntity user) create,
 ) {
   return (handler) {
     return (context) => handler(
           context.provide(
             () {
               final service = context.read<S>();
-              return create(service);
+              final userEntity = context.read<UserEntity>();
+              return create(service, userEntity);
             },
           ),
         );
@@ -94,9 +93,9 @@ Middleware featureMiddleware<
     S extends BaseService<E, RQ, RP, R, M>,
     C extends BaseController<E, RQ, RP, M, R, S>>(
   S Function(R repo, M mapper) createService,
-  R Function(Connection connection, UserEntity userEntity) createRepository,
+  R Function(Connection connection) createRepository,
   M Function() createMapper,
-  C Function(S) createController,
+  C Function(S, UserEntity user) createController,
 ) {
   return (handler) {
     return handler

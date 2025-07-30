@@ -13,9 +13,9 @@ abstract class UserEntity with _$UserEntity implements BaseEntity {
     @JsonKey(name: 'username') required String username,
     @JsonKey(name: 'password_hash') required String passwordHash,
     @JsonKey(name: 'full_name') String? fullName,
-    @JsonKey(name: 'created_at', fromJson: DateTimeConverter.fromJson)
+    @JsonKey(name: 'created_at', fromJson: DateTimeConverter.fromJsonNullable)
     DateTime? createdAt,
-    @JsonKey(name: 'updated_at', fromJson: DateTimeConverter.fromJson)
+    @JsonKey(name: 'updated_at', fromJson: DateTimeConverter.fromJsonNullable)
     DateTime? updatedAt,
   }) = _UserEntity;
 

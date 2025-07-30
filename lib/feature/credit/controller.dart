@@ -10,12 +10,13 @@ import 'package:mm/feature/credit/service/credit_service.dart';
 
 class CreditController extends BaseController<CreditEntity, CreditRequestDto,
     CreditResponseDto, CreditMapper, CreditRepository, CreditService> {
-  const CreditController(super.service);
+  const CreditController(super.service, super.userEntity);
 
   @override
   Future<CreditRequestDto> body(RequestContext context) async {
     final json = await context.request.json() as Map<String, dynamic>;
-    return CreditRequestDto.fromJson(json);
+    final dto = CreditRequestDto.fromJson(json).copyWith(userId: userEntity.id);
+    return dto;
   }
 
   @override

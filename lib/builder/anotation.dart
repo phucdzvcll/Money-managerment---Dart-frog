@@ -119,3 +119,7 @@ class OpenApi {
 class OpenApiSchema {
   const OpenApiSchema();
 }
+
+class FieldIgnore {
+  const FieldIgnore();
+}
