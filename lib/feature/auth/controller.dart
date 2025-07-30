@@ -23,14 +23,24 @@ Future<Response> loginRequest(RequestContext context) async {
     final loginRequest = LoginRequestDto.fromJson(body);
 
     if (loginRequest.username.isEmpty) {
-      error = const ErrorResponse(error: ApiError(code: USER_NAME_IS_EMPTY));
+      error = const ErrorResponse(
+        error: ApiError(
+          code: USER_NAME_IS_EMPTY,
+          statusCode: 400,
+        ),
+      );
     } else if (loginRequest.password.isEmpty) {
-      error = const ErrorResponse(error: ApiError(code: PASSWORD_IS_EMPTY));
+      error = const ErrorResponse(
+        error: ApiError(
+          code: PASSWORD_IS_EMPTY,
+          statusCode: 400,
+        ),
+      );
     } else {
       final result = await service.login(loginRequest);
       return result.fold(
         ifLeft: (ApiError e) {
-          error = ErrorResponse(error: e, code: 400);
+          error = ErrorResponse(error: e);
           return error.toResponse();
         },
         ifRight: (LoginResponse userEntity) {
@@ -42,7 +52,12 @@ Future<Response> loginRequest(RequestContext context) async {
     }
   } catch (e) {
     error = ErrorResponse(
-        error: ApiError(code: UNKNOWN_ERROR, message: e.toString()));
+      error: ApiError(
+        code: UNKNOWN_ERROR,
+        message: e.toString(),
+        statusCode: 500,
+      ),
+    );
   }
 
   return error.toResponse();
@@ -64,9 +79,19 @@ Future<Response> registerRequest(RequestContext context) async {
   final fullName = body['full_name']?.toString();
   ErrorResponse error;
   if (username == null || username.isEmpty) {
-    error = const ErrorResponse(error: ApiError(code: USER_NAME_IS_EMPTY));
+    error = const ErrorResponse(
+      error: ApiError(
+        code: USER_NAME_IS_EMPTY,
+        statusCode: 400,
+      ),
+    );
   } else if (password == null || password.isEmpty) {
-    error = const ErrorResponse(error: ApiError(code: PASSWORD_IS_EMPTY));
+    error = const ErrorResponse(
+      error: ApiError(
+        code: PASSWORD_IS_EMPTY,
+        statusCode: 400,
+      ),
+    );
   } else {
     final result = await service.signUp(username, password, fullName);
     return result.fold(

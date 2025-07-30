@@ -26,6 +26,18 @@ class OpenApiCombinerBuilder implements Builder {
       "servers": [
         {"url": "http://localhost:8081"}
       ],
+      "components": {
+        "securitySchemes": {
+          "BearerAuth": {
+            "type": "http",
+            "scheme": "bearer",
+            "bearerFormat": "JWT"
+          }
+        }
+      },
+      "security": [
+        {"BearerAuth": []}
+      ],
       "paths": <String, dynamic>{},
     };
     for (final input in inputAssets) {

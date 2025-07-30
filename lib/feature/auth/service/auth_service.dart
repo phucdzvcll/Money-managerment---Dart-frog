@@ -28,8 +28,7 @@ class AuthServiceImpl extends AuthService with ServiceMixin {
     return call(
       mapper: (LoginResponse e) => e,
       fn: () async {
-        final user =
-            await _userRepository.getUserByUsername(dto.username);
+        final user = await _userRepository.getUserByUsername(dto.username);
 
         final passwordHash = user.passwordHash;
         final isValid = PasswordUtil.verifyPassword(
@@ -37,7 +36,7 @@ class AuthServiceImpl extends AuthService with ServiceMixin {
           dbValue: passwordHash,
         );
         if (!isValid) {
-          throw const ApiError(code: PASSWORD_INCORRECT);
+          throw const ApiError(code: PASSWORD_INCORRECT, statusCode: 400);
         }
         final token = JwtUtil.generateJwt(user);
         final rToken = JwtUtil.generateRefeshJwt(user);
@@ -59,12 +58,17 @@ class AuthServiceImpl extends AuthService with ServiceMixin {
   ) async {
     final isTaken = await _userRepository.isUsernameOrEmailTaken(username, '');
     if (isTaken) {
-      return const Either.left(ApiError(code: USERNAME_ALREADY_TAKEN));
+      return const Either.left(
+          ApiError(code: USERNAME_ALREADY_TAKEN, statusCode: 400));
     }
     if (!PasswordUtil.isValidPassword(password)) {
-      return const Either.left(ApiError(
+      return const Either.left(
+        ApiError(
           code: PASSWORD_INCORRECT,
-          message: 'Password does not meet complexity requirements.'));
+          message: 'Password does not meet complexity requirements.',
+          statusCode: 400,
+        ),
+      );
     }
     final hashedPassword = PasswordUtil.generatePasswordHash(password);
 

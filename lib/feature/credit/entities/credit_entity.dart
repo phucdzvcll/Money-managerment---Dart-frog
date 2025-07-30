@@ -1,9 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mm/core/model/base_entity.dart';
-import 'package:mm/feature/credit/dto/credit_dto.dart';
 
 part 'credit_entity.freezed.dart';
-
 part 'credit_entity.g.dart';
 
 @freezed
@@ -21,16 +19,4 @@ abstract class CreditEntity with _$CreditEntity implements BaseEntity {
 
   factory CreditEntity.fromJson(Map<String, dynamic> json) =>
       _$CreditEntityFromJson(json);
-}
-
-extension CreditEntityExtension on CreditEntity {
-  CreditDto get toDto {
-    return CreditDto(
-      userId: userId,
-      source: source,
-      limitAmount: limitAmount,
-      dueDate: dueDate,
-      statementDate: statementDate,
-    );
-  }
 }
