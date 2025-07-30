@@ -4,6 +4,7 @@ import 'package:mm/core/model/api_response.dart';
 import 'package:postgres/postgres.dart';
 
 typedef ExecuteFunction<T> = Future<T> Function();
+typedef TransactionFunction<T> = Future<T> Function(TxSession s);
 typedef DataMapper<I, O> = O Function(I);
 
 mixin ServiceMixin {
@@ -14,6 +15,25 @@ mixin ServiceMixin {
   }) async {
     try {
       final result = await fn.call();
+      return Either.right(mapper(result));
+    } on ApiError catch (e) {
+      return Either.left(e);
+    } on ServerException catch (e) {
+      return Either.left(
+          ApiError(code: SERVER_ERROR, message: e.message, statusCode: 500));
+    } catch (e) {
+      return Either.left(ApiError(
+          code: UNKNOWN_ERROR, message: e.toString(), statusCode: 500));
+    }
+  }
+
+  Future<Either<ApiError, OUTPUT>> callWithTransaction<OUTPUT, INPUT>({
+    required TransactionFunction<INPUT> fn,
+    required DataMapper<INPUT, OUTPUT> mapper,
+    required Connection connection,
+  }) async {
+    try {
+      final result = await connection.runTx(fn);
       return Either.right(mapper(result));
     } on ApiError catch (e) {
       return Either.left(e);
