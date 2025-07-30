@@ -15,15 +15,15 @@ abstract class BaseRepository<E extends BaseEntity> {
 
   Map<String, dynamic> toJson(E entity);
 
-  Future<List<E>> findAll() async {
+  Future<List<E>> findAll({Session? s}) async {
     return SqlUtil.readAll<E>(
-        table: tableName, connection: connection, fromJson: fromJson);
+        table: tableName, connection: s ?? connection, fromJson: fromJson);
   }
 
-  Future<E?> findById(int id) async {
+  Future<E?> findById(int id, {Session? s}) async {
     return SqlUtil.read<E>(
       table: tableName,
-      connection: connection,
+      connection: s ?? connection,
       fromJson: fromJson,
       where: 'id = @id',
       parameters: {
@@ -32,19 +32,19 @@ abstract class BaseRepository<E extends BaseEntity> {
     );
   }
 
-  Future<E> create(E entity) async {
+  Future<E> create(E entity, {Session? s}) async {
     final data = toJson(entity)..remove('id');
     final id = await SqlUtil.create(
       table: tableName,
       data: data,
-      connection: connection,
+      connection: s ?? connection,
     );
-    final entityResult = await findById(id);
+    final entityResult = await findById(id, s: s);
     return entityResult!;
   }
 
-  Future<E> update(E entity) async {
-    final oldEntity = await findById(entity.id);
+  Future<E> update(E entity, {Session? s}) async {
+    final oldEntity = await findById(entity.id, s: s);
     if (oldEntity == null) {
       throw ApiError(
         message: 'Entity with id ${entity.id} not found',
@@ -56,7 +56,7 @@ abstract class BaseRepository<E extends BaseEntity> {
         _mergeJsonPreferNonNull(toJson(oldEntity), toJson(entity));
 
     await SqlUtil.update(
-      connection: connection,
+      connection: s ?? connection,
       table: tableName,
       data: inputValue,
       where: 'id = @id',
@@ -64,7 +64,7 @@ abstract class BaseRepository<E extends BaseEntity> {
         'id': entity.id,
       },
     );
-    return (await findById(entity.id))!;
+    return (await findById(entity.id, s: s))!;
   }
 
   static Map<String, dynamic> _mergeJsonPreferNonNull(
@@ -75,14 +75,14 @@ abstract class BaseRepository<E extends BaseEntity> {
     for (final key in json1.keys) {
       final value1 = json1[key];
       final value2 = json2[key];
-      result[key] = value1 ?? value2;
+      result[key] = value2 ?? value1;
     }
     return result;
   }
 
-  Future<void> delete(String id) async {
+  Future<void> delete(String id, {Session? s}) async {
     await SqlUtil.delete(
-      connection: connection,
+      connection: s ?? connection,
       table: tableName,
       where: 'id = @id',
       whereParams: {

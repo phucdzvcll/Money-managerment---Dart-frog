@@ -50,13 +50,14 @@ Middleware createServiceMiddleware<
     R extends BaseRepository<E>,
     M extends BaseMapper<RQ, E, RP>,
     S extends BaseService<E, RQ, RP, R, M>>(
-  S Function(R repo, M mapper) create,
+  S Function(R repo, M mapper, Connection connection) create,
 ) {
   return (handler) {
     return (context) {
       final repo = context.read<R>();
       final mapper = context.read<M>();
-      return handler(context.provide(() => create(repo, mapper)));
+      final connection = context.read<Connection>();
+      return handler(context.provide(() => create(repo, mapper, connection)));
     };
   };
 }
@@ -92,7 +93,7 @@ Middleware featureMiddleware<
     M extends BaseMapper<RQ, E, RP>,
     S extends BaseService<E, RQ, RP, R, M>,
     C extends BaseController<E, RQ, RP, M, R, S>>(
-  S Function(R repo, M mapper) createService,
+  S Function(R repo, M mapper, Connection connection) createService,
   R Function(Connection connection) createRepository,
   M Function() createMapper,
   C Function(S, UserEntity user) createController,

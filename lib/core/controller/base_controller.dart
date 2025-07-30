@@ -22,8 +22,6 @@ abstract class BaseController<
 
   Future<RQ> body(RequestContext context);
 
-
-
   Future<Response> create(
     RQ dto,
   ) async {

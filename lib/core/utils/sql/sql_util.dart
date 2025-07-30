@@ -7,7 +7,7 @@ class SqlUtil {
 
   static Future<T?> read<T>({
     required String table,
-    required Connection connection,
+    required Session connection,
     required FromJson<T> fromJson,
     String? where,
     Map<String, dynamic>? parameters,
@@ -29,7 +29,7 @@ class SqlUtil {
 
   static Future<List<T>> readAll<T>({
     required String table,
-    required Connection connection,
+    required Session connection,
     required FromJson<T> fromJson,
     String? where,
     Map<String, dynamic>? parameters,
@@ -47,7 +47,7 @@ class SqlUtil {
   static Future<int> create({
     required String table,
     required Map<String, dynamic> data,
-    required Connection connection,
+    required Session connection,
   }) async {
     final columns = data.keys.join(', ');
     final values = data.keys.map((k) => '@$k').join(', ');
@@ -65,7 +65,7 @@ class SqlUtil {
   }
 
   static Future<void> update({
-    required Connection connection,
+    required Session connection,
     required String table,
     required Map<String, dynamic> data,
     required String where,
@@ -80,7 +80,7 @@ class SqlUtil {
   }
 
   static Future<void> delete({
-    required Connection connection,
+    required Session connection,
     required String table,
     required String where,
     required Map<String, dynamic> whereParams,

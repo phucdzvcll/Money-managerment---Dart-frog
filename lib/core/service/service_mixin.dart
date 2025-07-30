@@ -10,6 +10,7 @@ mixin ServiceMixin {
   Future<Either<ApiError, OUTPUT>> call<OUTPUT, INPUT>({
     required ExecuteFunction<INPUT> fn,
     required DataMapper<INPUT, OUTPUT> mapper,
+    Connection? connection,
   }) async {
     try {
       final result = await fn.call();

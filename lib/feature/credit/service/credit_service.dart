@@ -8,10 +8,10 @@ import 'package:mm/feature/credit/repository/credit_repository.dart';
 
 abstract base class CreditService extends BaseService<CreditEntity,
     CreditRequestDto, CreditResponseDto, CreditRepository, CreditMapper> {
-  CreditService(super.repository, super.mapper);
+  CreditService(super.repository, super.mapper, super.connection);
 }
 
 @Injectable(as: CreditService)
 base class CreditServiceImpl extends CreditService {
-  CreditServiceImpl(super.repository, super.mapper);
+  CreditServiceImpl(super.repository, super.mapper, super.connection);
 }
