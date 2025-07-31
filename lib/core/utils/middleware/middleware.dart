@@ -93,10 +93,10 @@ Middleware featureMiddleware<
     M extends BaseMapper<RQ, E, RP>,
     S extends BaseService<E, RQ, RP, R, M>,
     C extends BaseController<E, RQ, RP, M, R, S>>(
+  C Function(S, UserEntity user) createController,
   S Function(R repo, M mapper, Connection connection) createService,
   R Function(Connection connection) createRepository,
   M Function() createMapper,
-  C Function(S, UserEntity user) createController,
 ) {
   return (handler) {
     return handler

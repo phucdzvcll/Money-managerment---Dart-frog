@@ -9,6 +9,6 @@ import 'package:mm/feature/credit/repository/credit_repository.dart';
 import 'package:mm/feature/credit/service/credit_service.dart';
 
 Future<Response> onRequest(RequestContext context) async {
-  return reqiestWithOutId<CreditEntity, CreditRequestDto, CreditResponseDto,
+  return requestWithOutId<CreditEntity, CreditRequestDto, CreditResponseDto,
       CreditRepository, CreditMapper, CreditService, CreditController>(context);
 }

@@ -12,10 +12,10 @@ Handler middleware(Handler handler) {
   return handler.use(
     featureMiddleware<CreditEntity, CreditRequestDto, CreditResponseDto,
         CreditRepository, CreditMapper, CreditService, CreditController>(
+      CreditController.new,
       CreditServiceImpl.new,
       CreditRepositoryImpl.new,
       CreditMapper.new,
-      CreditController.new,
     ),
   );
 }

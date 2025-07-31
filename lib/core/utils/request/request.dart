@@ -40,7 +40,7 @@ Future<Response> reqiestWithId<
   }
 }
 
-Future<Response> reqiestWithOutId<
+Future<Response> requestWithOutId<
     E extends BaseEntity,
     RQ extends BaseRequestDto,
     RP extends BaseResponseDto,
