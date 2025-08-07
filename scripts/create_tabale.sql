@@ -1,4 +1,3 @@
--- Bảng người dùng
 CREATE TABLE users
 (
     id            SERIAL PRIMARY KEY,
@@ -8,7 +7,7 @@ CREATE TABLE users
     created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
--- Bảng tín dụng (credit card)
+
 CREATE TABLE credits
 (
     id             SERIAL PRIMARY KEY,
@@ -21,7 +20,7 @@ CREATE TABLE credits
     updated_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Bảng giao dịch chi tiêu / thu nhập
+
 CREATE TABLE transactions
 (
     id          SERIAL PRIMARY KEY,
@@ -36,7 +35,6 @@ CREATE TABLE transactions
     created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CHECK (
-        -- Nếu là giao dịch tín dụng thì phải có credit_id
         (is_credit = TRUE AND credit_id IS NOT NULL)
             OR
         (is_credit = FALSE)
@@ -54,7 +52,7 @@ CREATE TABLE installments
     start_date     DATE           NOT NULL,
     months         INT            NOT NULL,
     is_completed   BOOLEAN   DEFAULT FALSE,
-    credit_id      INT REFERENCES credits (id), -- nullable nếu không dùng thẻ tín dụng
+    credit_id      INT REFERENCES credits (id),
     created_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

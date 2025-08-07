@@ -7,7 +7,7 @@ import 'package:mm/core/model/base_mapper.dart';
 import 'package:mm/core/repository/base_repository.dart';
 import 'package:mm/core/service/base_service.dart';
 
-Future<Response> reqiestWithId<
+Future<Response> requestWithId<
     E extends BaseEntity,
     RQ extends BaseRequestDto,
     RP extends BaseResponseDto,

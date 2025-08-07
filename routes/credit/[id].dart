@@ -9,7 +9,7 @@ import 'package:mm/feature/credit/repository/credit_repository.dart';
 import 'package:mm/feature/credit/service/credit_service.dart';
 
 Future<Response> onRequest(RequestContext context, String id) async {
-  return reqiestWithId<
+  return requestWithId<
       CreditEntity,
       CreditRequestDto,
       CreditResponseDto,
