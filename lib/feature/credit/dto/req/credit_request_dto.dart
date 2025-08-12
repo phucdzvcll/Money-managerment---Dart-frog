@@ -11,8 +11,8 @@ abstract class CreditRequestDto
     with _$CreditRequestDto
     implements BaseRequestDto {
   const factory CreditRequestDto({
-    int? id,
-    @FieldIgnore() @JsonKey(name: 'user_id') int? userId,
+    String? id,
+    @FieldIgnore() @JsonKey(name: 'user_id') String? userId,
     String? source,
     @JsonKey(name: 'limit_amount')
     double? limitAmount,

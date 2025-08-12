@@ -11,7 +11,7 @@ class JwtUtil {
       final jwt = JWT.verify(token, _assetsTokenKey);
       final payload = jwt.payload;
       return UserEntity(
-        id: payload['id'] as int,
+        id: payload['id'] as String,
         passwordHash: payload['password_hash'] as String,
         username: payload['username'] as String,
         fullName: payload['full_name'] as String?,

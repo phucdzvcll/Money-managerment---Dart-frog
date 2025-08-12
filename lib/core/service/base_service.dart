@@ -27,17 +27,17 @@ abstract base class BaseService<
     });
   }
 
-  Future<E?> getById(int id, {Session? s}) async {
+  Future<E?> getById(String id, {Session? s}) async {
     return connection.runTx((s) async {
       return repository.findById(id, s: s);
     });
   }
 
-  Future<Either<ApiError, void>> deleteById(int id, {Session? s}) async {
+  Future<Either<ApiError, void>> deleteById(String id, {Session? s}) async {
     return call(
       fn: () async {
         return connection.runTx((s) async {
-          await repository.delete(id.toString(), s: s);
+          await repository.delete(id, s: s);
         });
       },
       mapper: (_) {},
@@ -80,7 +80,7 @@ abstract base class BaseService<
     );
   }
 
-  Future<Either<ApiError, RP>> excuteGetById(int id, {Session? s}) {
+  Future<Either<ApiError, RP>> excuteGetById(String id, {Session? s}) {
     return call(
       fn: () async {
         return connection.runTx((s) async {

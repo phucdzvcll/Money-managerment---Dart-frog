@@ -66,7 +66,7 @@ class CreditController extends BaseController<CreditEntity, CreditRequestDto,
     responseSchema: 'credit_response_dto.openapi_schema.json',
     isPath: true,
   )
-  Future<Response> executeFindById({required int id}) {
+  Future<Response> executeFindById({required String id}) {
     return findById(id);
   }
 
@@ -78,7 +78,7 @@ class CreditController extends BaseController<CreditEntity, CreditRequestDto,
     tag: 'credit',
     isPath: true,
   )
-  Future<Response> executeDeleteById({required int id}) async {
+  Future<Response> executeDeleteById({required String id}) async {
     return delete(id);
   }
 }

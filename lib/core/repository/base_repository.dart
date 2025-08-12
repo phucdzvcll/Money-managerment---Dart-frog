@@ -20,7 +20,7 @@ abstract class BaseRepository<E extends BaseEntity> {
         table: tableName, connection: s ?? connection, fromJson: fromJson);
   }
 
-  Future<E?> findById(int id, {Session? s}) async {
+  Future<E?> findById(String id, {Session? s}) async {
     return SqlUtil.read<E>(
       table: tableName,
       connection: s ?? connection,

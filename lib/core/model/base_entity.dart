@@ -1,5 +1,5 @@
 abstract class BaseEntity {
-  int get id;
+  String get id;
 
   DateTime? get createdAt;
 

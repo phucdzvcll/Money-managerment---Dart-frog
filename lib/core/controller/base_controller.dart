@@ -48,7 +48,7 @@ abstract class BaseController<
     );
   }
 
-  Future<Response> findById(int id) async {
+  Future<Response> findById(String id) async {
     final result = await service.excuteGetById(id);
     return result.fold(
       ifLeft: (ApiError error) {
@@ -72,7 +72,7 @@ abstract class BaseController<
     );
   }
 
-  Future<Response> delete(int id) async {
+  Future<Response> delete(String id) async {
     final result = await service.deleteById(id);
     return result.fold(
       ifLeft: (ApiError error) {
@@ -88,9 +88,9 @@ abstract class BaseController<
 
   Future<Response> executeFindAll();
 
-  Future<Response> executeFindById({required int id});
+  Future<Response> executeFindById({required String id});
 
-  Future<Response> executeDeleteById({required int id});
+  Future<Response> executeDeleteById({required String id});
 
   Future<Response> executeUpdate(RQ dto);
 }

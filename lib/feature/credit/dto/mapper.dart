@@ -8,8 +8,8 @@ class CreditMapper
   @override
   CreditEntity fromRequestDto(CreditRequestDto dto) {
     return CreditEntity(
-      id: dto.id ?? -1,
-      userId: dto.userId ?? -1,
+      id: dto.id ?? '',
+      userId: dto.userId ?? '',
       source: dto.source ?? '',
       limitAmount: dto.limitAmount ?? 0.0,
       dueDate: dto.dueDate ?? '',

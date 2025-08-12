@@ -44,7 +44,7 @@ class SqlUtil {
     return result.map((row) => fromJson(row.toColumnMap())).toList();
   }
 
-  static Future<int> create({
+  static Future<String> create({
     required String table,
     required Map<String, dynamic> data,
     required Session connection,
@@ -58,9 +58,9 @@ class SqlUtil {
     );
     final data2 = result.map((row) => row.toColumnMap()).toList();
     if (data2.isEmpty) {
-      return -1;
+      return '';
     } else {
-      return data2.first['id'] as int;
+      return data2.first['id'] as String;
     }
   }
 

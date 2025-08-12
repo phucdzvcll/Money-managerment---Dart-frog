@@ -9,7 +9,7 @@ part 'login_response.g.dart';
 @OpenApiSchema()
 abstract class LoginResponse with _$LoginResponse implements BaseResponseDto {
   const factory LoginResponse({
-    @JsonKey(name: 'user_id') required int userId,
+    @JsonKey(name: 'user_id') required String userId,
     @JsonKey(name: 'username') required String username,
     @JsonKey(name: 'full_name') String? fullName,
     @JsonKey(name: 'token') required String token,

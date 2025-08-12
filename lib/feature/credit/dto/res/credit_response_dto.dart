@@ -11,8 +11,8 @@ abstract class CreditResponseDto
     with _$CreditResponseDto
     implements BaseResponseDto {
   const factory CreditResponseDto({
-    required int id,
-    @JsonKey(name: 'user_id') required int userId,
+    required String id,
+    @JsonKey(name: 'user_id') required String userId,
     required String source,
     @JsonKey(name: 'limit_amount') required double limitAmount,
     @JsonKey(name: 'due_date') required String dueDate,

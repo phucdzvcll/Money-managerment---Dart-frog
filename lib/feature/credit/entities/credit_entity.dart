@@ -7,8 +7,8 @@ part 'credit_entity.g.dart';
 @freezed
 abstract class CreditEntity with _$CreditEntity implements BaseEntity {
   const factory CreditEntity({
-    required int id,
-    @JsonKey(name: 'user_id') required int userId,
+    required String id,
+    @JsonKey(name: 'user_id') required String userId,
     required String source,
     @JsonKey(name: 'limit_amount') required double limitAmount,
     @JsonKey(name: 'due_date') required String dueDate,

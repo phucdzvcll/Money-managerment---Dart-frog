@@ -9,7 +9,7 @@ part 'user_entity.g.dart';
 @freezed
 abstract class UserEntity with _$UserEntity implements BaseEntity {
   const factory UserEntity({
-    @JsonKey(name: 'id') required int id,
+    @JsonKey(name: 'id') required String id,
     @JsonKey(name: 'username') required String username,
     @JsonKey(name: 'password_hash') required String passwordHash,
     @JsonKey(name: 'full_name') String? fullName,

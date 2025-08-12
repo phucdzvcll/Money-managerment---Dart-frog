@@ -19,7 +19,7 @@ Future<Response> requestWithId<
   String id,
 ) async {
   try {
-    final requestId = int.tryParse(id)!;
+    final requestId = id;
 
     final controller = context.read<C>();
     final method = context.request.method;
