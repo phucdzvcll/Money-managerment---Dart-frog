@@ -25,16 +25,16 @@ Future<Response> loginRequest(RequestContext context) async {
     if (loginRequest.username.isEmpty) {
       error = const ErrorResponse(
         error: ApiError(
-          code: USER_NAME_IS_EMPTY,
-          statusCode: 400,
-        ),
+            code: ErrorCode.USER_NAME_IS_EMPTY,
+            statusCode: 400,
+            message: 'USER_NAME_IS_EMPTY'),
       );
     } else if (loginRequest.password.isEmpty) {
       error = const ErrorResponse(
         error: ApiError(
-          code: PASSWORD_IS_EMPTY,
-          statusCode: 400,
-        ),
+            code: ErrorCode.PASSWORD_IS_EMPTY,
+            statusCode: 400,
+            message: 'PASSWORD_IS_EMPTY'),
       );
     } else {
       final result = await service.login(loginRequest);
@@ -44,16 +44,29 @@ Future<Response> loginRequest(RequestContext context) async {
           return error.toResponse();
         },
         ifRight: (LoginResponse userEntity) {
-          return SuccessResponse(
-            data: userEntity,
-          ).toResponse();
+          final isWeb = context.request.headers['X-Client-Platform'] == 'w';
+          if (isWeb) {
+            final userEntity2 = userEntity.copyWith(token: '', rToken: '');
+            return SuccessResponse(
+              data: userEntity2,
+            ).toResponse(
+              headers: {
+                'set-cookie':
+                    'access_token=${userEntity.token}; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=6800',
+              },
+            );
+          } else {
+            return SuccessResponse(
+              data: userEntity,
+            ).toResponse();
+          }
         },
       );
     }
   } catch (e) {
     error = ErrorResponse(
       error: ApiError(
-        code: UNKNOWN_ERROR,
+        code: ErrorCode.UNKNOWN_ERROR,
         message: e.toString(),
         statusCode: 500,
       ),
@@ -81,14 +94,14 @@ Future<Response> registerRequest(RequestContext context) async {
   if (username == null || username.isEmpty) {
     error = const ErrorResponse(
       error: ApiError(
-        code: USER_NAME_IS_EMPTY,
+        code: ErrorCode.USER_NAME_IS_EMPTY,
         statusCode: 400,
       ),
     );
   } else if (password == null || password.isEmpty) {
     error = const ErrorResponse(
       error: ApiError(
-        code: PASSWORD_IS_EMPTY,
+        code: ErrorCode.PASSWORD_IS_EMPTY,
         statusCode: 400,
       ),
     );

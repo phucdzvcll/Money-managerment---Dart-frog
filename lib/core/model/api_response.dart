@@ -59,7 +59,7 @@ class ErrorResponse extends ApiResponse {
   final ApiError error;
 
   Map<String, dynamic> toJson() => {
-        'code': error.code,
+        'code': error.statusCode,
         'success': success,
         'error': error.toJson(),
       };
@@ -74,7 +74,7 @@ extension ApiErrorEx on ApiError {
 @freezed
 abstract class ApiError with _$ApiError implements Exception {
   const factory ApiError({
-    required String code,
+    required ErrorCode code,
     required int statusCode,
     String? message,
   }) = _ApiError;
@@ -110,7 +110,7 @@ extension ApiResponseSuccessExtension on ApiResponse {
 final emptyResponse = Response.json();
 
 Response unknowError(String message) =>
-    ApiError(code: UNKNOWN_ERROR, statusCode: 500).toResponse;
+    ApiError(code: ErrorCode.UNKNOWN_ERROR, statusCode: 500).toResponse;
 
 Response badRequest(String message, {int code = 400}) =>
-    ApiError(code: BAD_REQUEST, statusCode: code).toResponse;
+    ApiError(code: ErrorCode.BAD_REQUEST, statusCode: code).toResponse;

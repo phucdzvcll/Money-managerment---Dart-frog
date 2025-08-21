@@ -6,7 +6,6 @@ import 'package:mm/core/model/base_entity.dart';
 import 'package:mm/core/model/base_mapper.dart';
 import 'package:mm/core/repository/base_repository.dart';
 import 'package:mm/core/service/base_service.dart';
-
 Future<Response> requestWithId<
     E extends BaseEntity,
     RQ extends BaseRequestDto,
@@ -20,7 +19,6 @@ Future<Response> requestWithId<
 ) async {
   try {
     final requestId = id;
-
     final controller = context.read<C>();
     final method = context.request.method;
     switch (method) {

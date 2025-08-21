@@ -20,10 +20,10 @@ mixin ServiceMixin {
       return Either.left(e);
     } on ServerException catch (e) {
       return Either.left(
-          ApiError(code: SERVER_ERROR, message: e.message, statusCode: 500));
+          ApiError(code: ErrorCode.SERVER_ERROR, message: e.message, statusCode: 500));
     } catch (e) {
       return Either.left(ApiError(
-          code: UNKNOWN_ERROR, message: e.toString(), statusCode: 500));
+          code: ErrorCode.UNKNOWN_ERROR, message: e.toString(), statusCode: 500));
     }
   }
 
@@ -39,10 +39,10 @@ mixin ServiceMixin {
       return Either.left(e);
     } on ServerException catch (e) {
       return Either.left(
-          ApiError(code: SERVER_ERROR, message: e.message, statusCode: 500));
+          ApiError(code: ErrorCode.SERVER_ERROR, message: e.message, statusCode: 500));
     } catch (e) {
       return Either.left(ApiError(
-          code: UNKNOWN_ERROR, message: e.toString(), statusCode: 500));
+          code: ErrorCode.UNKNOWN_ERROR, message: e.toString(), statusCode: 500));
     }
   }
 
@@ -58,9 +58,9 @@ mixin ServiceMixin {
       return Either.left(e);
     } on ServerException catch (e) {
       return Either.left(
-          ApiError(code: SERVER_ERROR, message: e.message, statusCode: 500));
+          ApiError(code: ErrorCode.SERVER_ERROR, message: e.message, statusCode: 500));
     } catch (e) {
-      return const Either.left(ApiError(code: UNKNOWN_ERROR, statusCode: 500));
+      return const Either.left(ApiError(code: ErrorCode.UNKNOWN_ERROR, statusCode: 500));
     }
   }
 
@@ -73,7 +73,7 @@ mixin ServiceMixin {
     } on ApiError {
       rethrow;
     } catch (e) {
-      throw const ApiError(code: UNKNOWN_ERROR, statusCode: 500);
+      throw const ApiError(code: ErrorCode.UNKNOWN_ERROR, statusCode: 500);
     }
   }
 }

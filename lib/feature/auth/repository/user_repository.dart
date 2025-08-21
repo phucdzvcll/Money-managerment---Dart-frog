@@ -45,11 +45,13 @@ class UserRepository {
       where: "username = '$username'",
     );
 
-    if (result == null)
+    if (result == null) {
       throw const ApiError(
-        code: USER_NOT_FOUND,
+        code: ErrorCode.USER_NOT_FOUND,
         statusCode: 400,
+        message: 'USER_NOT_FOUND',
       );
+    }
 
     return result;
   }

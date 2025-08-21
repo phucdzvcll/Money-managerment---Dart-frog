@@ -48,7 +48,7 @@ abstract class BaseRepository<E extends BaseEntity> {
     if (oldEntity == null) {
       throw ApiError(
         message: 'Entity with id ${entity.id} not found',
-        code: DATA_NOT_FOUND,
+        code: ErrorCode.DATA_NOT_FOUND,
         statusCode: 400,
       );
     }

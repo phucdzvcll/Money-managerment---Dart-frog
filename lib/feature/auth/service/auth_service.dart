@@ -36,7 +36,10 @@ class AuthServiceImpl extends AuthService with ServiceMixin {
           dbValue: passwordHash,
         );
         if (!isValid) {
-          throw const ApiError(code: PASSWORD_INCORRECT, statusCode: 400);
+          throw const ApiError(
+              code: ErrorCode.PASSWORD_INCORRECT,
+              statusCode: 400,
+              message: 'PASSWORD_INCORRECT');
         }
         final token = JwtUtil.generateJwt(user);
         final rToken = JwtUtil.generateRefeshJwt(user);
@@ -59,12 +62,12 @@ class AuthServiceImpl extends AuthService with ServiceMixin {
     final isTaken = await _userRepository.isUsernameOrEmailTaken(username, '');
     if (isTaken) {
       return const Either.left(
-          ApiError(code: USERNAME_ALREADY_TAKEN, statusCode: 400));
+          ApiError(code: ErrorCode.USERNAME_ALREADY_TAKEN, statusCode: 400));
     }
     if (!PasswordUtil.isValidPassword(password)) {
       return const Either.left(
         ApiError(
-          code: PASSWORD_INCORRECT,
+          code: ErrorCode.PASSWORD_INCORRECT,
           message: 'Password does not meet complexity requirements.',
           statusCode: 400,
         ),

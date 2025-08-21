@@ -6,8 +6,11 @@ class JwtUtil {
   static final _assetsTokenKey = SecretKey(Env.jwtAccessSecret);
   static final _refeshTokenKey = SecretKey(Env.jwtRefreshSecret);
 
-  static UserEntity decodeJwt(String token) {
+  static UserEntity decodeJwt(String? token) {
     try {
+      if (token == null) {
+        throw Exception('Token is null');
+      }
       final jwt = JWT.verify(token, _assetsTokenKey);
       final payload = jwt.payload;
       return UserEntity(
@@ -37,7 +40,10 @@ class JwtUtil {
     return jwt.sign(_refeshTokenKey, expiresIn: const Duration(days: 30));
   }
 
-  static bool verifyJwt(String token) {
+  static bool verifyJwt(String? token) {
+    if (token == null) {
+      return false;
+    }
     try {
       JWT.verify(token, _assetsTokenKey);
       return true;

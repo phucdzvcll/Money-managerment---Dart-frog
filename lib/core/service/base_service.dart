@@ -87,7 +87,7 @@ abstract base class BaseService<
           final result = await getById(id, s: s);
           if (result == null) {
             throw const ApiError(
-              code: NOT_FOUND,
+              code: ErrorCode.NOT_FOUND,
               message: 'Entity not found',
               statusCode: 400,
             );
