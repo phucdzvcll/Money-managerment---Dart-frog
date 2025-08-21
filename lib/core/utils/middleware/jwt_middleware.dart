@@ -3,12 +3,12 @@ import 'package:dart_frog/dart_frog.dart';
 import 'package:mm/constants/bypass_route.dart';
 import 'package:mm/core/utils/auth/jwt.dart';
 
+///Verify token
 Middleware jwtMiddleware() {
   return (handler) {
     return (context) {
       final path = context.request.uri.path;
-      final url = context.request.uri.host;
-      if (shouldByPass(path)) {
+      if (_shouldByPass(path)) {
         return handler(context);
       }
 
@@ -62,7 +62,7 @@ FutureOr<Response> _handleToken(
   return handler(context.provide(() => userData));
 }
 
-bool shouldByPass(String path) {
+bool _shouldByPass(String path) {
   for (final e in bypassPath) {
     if (path.startsWith(e)) {
       return true;
